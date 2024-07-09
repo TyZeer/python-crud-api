@@ -8,6 +8,8 @@ from core.models import Base, db_helper
 
 from items_views import router as items_router
 from users.views import router as user_router
+from api_v1 import router as api_router
+from core.config import settings
 
 
 @asynccontextmanager
@@ -22,6 +24,8 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(items_router)
 
 app.include_router(user_router)
+
+app.include_router(api_router, prefix=settings.api_v1_prefix)
 
 
 @app.get("/")
