@@ -27,6 +27,17 @@ async def create_product(
     return product
 
 
+async def delete_product(
+    session: AsyncSession,
+    product_id: int,
+) -> Product:
+    product = await get_product(session, product_id)
+    if product is not None:
+        await session.delete(product)
+    await session.commit()
+    return product
+
+
 # async def update_product(  РАЗНИЦА МЕЖДУ PUT И PATCH
 #     session: AsyncSession,
 #     product: Product,

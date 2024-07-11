@@ -36,3 +36,13 @@ async def get_product(
     if product is not None:
         return product
     raise HTTPException(status_code=404, detail="Product not found")
+
+
+@router.delete("/{product_id}/", response_model=Product)
+async def delete_product(
+    product_id: int,
+    session: AsyncSession = Depends(
+        db_helper.session_dependency,
+    ),
+):
+    return await crud.delete_product(session=session, product_id=product_id)
