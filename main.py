@@ -20,6 +20,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
 # app.include_router(items_router, prefix="/items-views") Можно так или
 app.include_router(items_router)
 

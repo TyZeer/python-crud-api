@@ -3,7 +3,12 @@ from typing import List
 from fastapi import Depends, APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api_v1.products.schemas import Product, ProductCreate, ProductUpdate
+from api_v1.products.schemas import (
+    Product,
+    ProductCreate,
+    ProductUpdate,
+    ProductPartial,
+)
 from api_v1.products import crud
 from core.models import db_helper
 from api_v1.products.dependencies import get_product_by_id
@@ -55,6 +60,19 @@ async def update_product(
         session=session,
         product=product,
         product_update=product_update,
+    )
+
+
+@router.patch("/{product_id}/", response_model=Product)
+async def update_product_partial(
+    product_update: ProductPartial,
+    product: Product = Depends(get_product_by_id),
+    session: AsyncSession = Depends(db_helper.session_dependency),
+):
+    return await crud.update_partial(
+        session=session,
+        product=product,
+        product_partial=product_update,
     )
 
 
